@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rollingupdate
+  name: go-deployment
   labels:
     app: go
 spec:
   selector:
     matchLabels:
-      app: rollingupdate #标签
-  replicas: 3  # 建立3个pod
+      app: go #标签
+  replicas: 3 # 建立3个pod
   minReadySeconds: 5
   strategy:
     type: RollingUpdate # 更新策略为滚动更新
@@ -19,11 +19,11 @@ spec:
   template:
     metadata:
       labels:
-        app: rollingupdate
+        app: go
     spec:
       containers:
         - image: cuishuang/go-k8s-deploy-cuishuang:v1.3
-          name: rollingupdate
+          name: go
           imagePullPolicy: Always
           command: ["./main","-v","v1.3"]
           ports:
@@ -33,12 +33,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rollingupdate
+  name: go-service
   labels:
-    app: rollingupdate
+    app: go
 spec:
   selector:
-    app: rollingupdate
+    app: go
   ports:
     - name: go-port
       protocol: TCP
